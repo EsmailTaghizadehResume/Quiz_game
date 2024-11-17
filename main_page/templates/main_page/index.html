@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block title %}
+    Game Interface
+{% endblock %}
+
+{% block links %}
+
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
+
+
+{% block content %}
+
+    <div class="welcome-screen">
+        <video width="640" height="360" muted controls autoplay playsinline>
+            <source src="{% static 'videos/output_video_compressed.mp4' %}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <div class="currency">
+        <div class="coin">
+            <div class="coin-icon diamond"></div>
+            <span>0</span>
+        </div>
+        <div class="coin">
+            <div class="coin-icon gold"></div>
+            <span>0</span>
+        </div>
+        <div class="coin">
+            <div class="coin-icon silver"></div>
+            <span>0</span>
+        </div>
+        <div class="coin">
+            <div class="coin-icon bronze"></div>
+            <span>0</span>
+        </div>
+    </div>
+
+    <div class="game-buttons">
+        <button class="game-button">sans</button>
+        <button class="game-button">guiz</button>
+        <button class="game-button">game</button>
+        <button class="game-button">fotba</button>
+    </div>
+
+    <div class="level">Level 0</div>
+
+{% endblock %}
+
+{% block script %}
+    <script>
+        // Select the element you want to delete
+        const elementToDelete = document.querySelector(".welcome-screen");
+
+        {#const resspond = document.getElementById("res")#}
+        // Wait for 15 seconds (15,000 milliseconds) and then remove the element
+        setTimeout(() => {
+            if (elementToDelete) {
+                elementToDelete.remove();
+                {#resspond.innerHTML = `<p>${window.Telegram.WebApp.initData}</p>`#}
+            }
+        }, 15000); // 15000 milliseconds = 15 seconds
+        $.ajax(
+            "http://127.0.0.1:8000/initial-user",
+            {
+                method: "post",
+                data: JSON.stringify({
+                    "data": window.Telegram.WebApp,
+                }),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+                success: function (res) {
+                    console.log(res);
+                },
+                error: function (res) {
+                    console.log("there is error");
+                }
+            }
+        );
+
+        console.log(window.Telegram.WebApp);
+    </script>
+{% endblock %}
